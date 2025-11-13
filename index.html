@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemSync - AI-Powered Memory Management for Chat Platforms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: #0a1628;
+            color: #e2e8f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(10, 22, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-nav img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #b4c7e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-cta {
+            background: #2563eb;
+            color: white;
+            padding: 0.625rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0a1628 0%, #1a2f4a 50%, #0a1628 100%);
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+            animation: heroGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes heroGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(37, 99, 235, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+            border-radius: 30px;
+            color: #3b82f6;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-badge::before {
+            content: '✨';
+            font-size: 1rem;
+        }
+
+        .hero-logo {
+            margin-bottom: 2rem;
+        }
+
+        .hero-logo img {
+            height: 80px;
+            width: auto;
+            filter: drop-shadow(0 10px 30px rgba(37, 99, 235, 0.3));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: white;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #ffffff 0%, #b4c7e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tagline {
+            font-size: 1.375rem;
+            color: #b4c7e0;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.6);
+            background: #1d4ed8;
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid #2563eb;
+            color: #2563eb;
+            box-shadow: none;
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: #3b82f6;
+            color: #3b82f6;
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .stat:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(37, 99, 235, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #b4c7e0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(37, 99, 235, 0.1);
+            color: #2563eb;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: linear-gradient(180deg, #0f1f35 0%, #0a1628 100%);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin-bottom: 4rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(37, 99, 235, 0.3);
+        }
+
+        .video-section h2 {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 0.75rem;
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        .video-description {
+            text-align: center;
+            color: #b4c7e0;
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #0a1628;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(37, 99, 235, 0.3);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #7d8fa9;
+        }
+
+        .video-placeholder svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Features Section */
+        .features {
+            margin-bottom: 4rem;
+            padding: 2rem 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 0.75rem;
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #0f1f35 0%, #0a1628 100%);
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(37, 99, 235, 0.5);
+            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.25rem;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(37, 99, 235, 0.3));
+        }
+
+        .feature-card h3 {
+            font-size: 1.375rem;
+            margin-bottom: 0.875rem;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: #b4c7e0;
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .feature-badge.free {
+            background: rgba(30, 142, 62, 0.2);
+            color: #28a745;
+            border: 1px solid rgba(30, 142, 62, 0.4);
+        }
+
+        .feature-badge.pro {
+            background: rgba(194, 138, 28, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(194, 138, 28, 0.4);
+        }
+
+        /* Platforms Section */
+        .platforms {
+            padding: 3rem 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .platforms h2 {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 0.75rem;
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        .platforms-description {
+            text-align: center;
+            color: #b4c7e0;
+            font-size: 1.125rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .platform-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .platform-badge {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            padding: 1.75rem 2.5rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
+         border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 200px;
+            justify-content: center;
+        }
+
+        .platform-badge img {
+            height: 36px;
+            width: 36px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .platform-badge:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(37, 99, 235, 0.3);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            margin-bottom: 4rem;
+            padding: 2rem 0;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 0.75rem;
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        .how-it-works-description {
+            text-align: center;
+            color: #b4c7e0;
+            font-size: 1.125rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(15, 31, 53, 0.5) 0%, rgba(10, 22, 40, 0.5) 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            border-color: rgba(37, 99, 235, 0.4);
+            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.2);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border-radius: 50%;
+            line-height: 60px;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.5);
+            position: relative;
+        }
+
+        .step-number::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            opacity: 0.3;
+            z-index: -1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .step p {
+            color: #b4c7e0;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            margin: 4rem 0;
+            padding: 2rem 0;
+        }
+
+        .pricing-section h2 {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 0.75rem;
+            color: #e2e8f0;
+            font-weight: 700;
+        }
+
+        .pricing-description {
+            text-align: center;
+            color: #b4c7e0;
+            font-size: 1.125rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: linear-gradient(135deg, #0f1f35 0%, #0a1628 100%);
+            border-radius: 16px;
+            padding: 2.5rem;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #2563eb;
+            transform: scale(1.05);
+            box-shadow: 0 8px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(37, 99, 235, 0.5);
+            box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4);
+        }
+
+        .pricing-card.featured:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 0.375rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+        }
+
+        .pricing-card h3 {
+            font-size: 1.75rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            color: #2563eb;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .pricing-card .price-period {
+            font-size: 1rem;
+            color: #7d8fa9;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-card .price-note {
+            font-size: 0.875rem;
+            color: #b4c7e0;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #2563eb;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            color: #b4c7e0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .pricing-features li.pro-feature::before {
+            color: #f59e0b;
+        }
+
+        .pricing-card .cta-button {
+            width: 100%;
+            justify-content: center;
+            margin-top: auto;
+        }
+
+        .pricing-card .cta-button.secondary {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .pricing-card .cta-button.secondary:hover {
+            background: #1d4ed8;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            padding: 4rem 2rem;
+            margin: 4rem 0 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section .cta-button {
+            background: white;
+            color: #2563eb;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section .cta-button:hover {
+            background: #f0f4ff;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a1628;
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .footer-logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: #b4c7e0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        footer a:hover {
+            color: #2563eb;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: rgba(37, 99, 235, 0.2);
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .footer-bottom {
+            color: #7d8fa9;
+            font-size: 0.875rem;
+        }
+
+        .footer-bottom p {
+            margin: 0.25rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .nav-links {
+                display: none;
+            }
+
+            .nav-content {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 1.5rem 3rem;
+            }
+
+            .hero-logo img {
+                height: 60px;
+            }
+
+            h1 {
+                font-size: 2.25rem;
+            }
+
+            .tagline {
+                font-size: 1.125rem;
+            }
+
+            .cta-button {
+                padding: 0.875rem 2rem;
+                font-size: 1rem;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .features h2,
+            .platforms h2,
+            .how-it-works h2,
+            .video-section h2,
+            .cta-section h2 {
+                font-size: 1.75rem;
+            }
+
+            .video-description,
+            .platforms-description,
+            .how-it-works-description,
+            .cta-section p {
+                font-size: 1rem;
+            }
+
+            .features-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .cta-button {
+                width: 100%;
+            }
+
+            .platform-badges {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .platform-badge {
+                width: 100%;
+            }
+
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .pricing-card.featured:hover {
+                transform: translateY(-5px) scale(1);
+            }
+
+            .pricing-card .price {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <div class="logo-nav">
+                <img src="assets/logo-white.png" alt="MemSync Logo">
+                <span class="logo-text">MemSync</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#demo">Demo</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#" class="nav-cta">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">AI-Powered Memory Management</div>
+            <div class="hero-logo">
+                <img src="assets/logo-white.png" alt="MemSync">
+            </div>
+            <h1>Your AI Conversations, Perfectly Organized</h1>
+            <p class="tagline">Save, organize, and collaborate on your ChatGPT, Claude, and Gemini conversations with intelligent AI-powered suggestions</p>
+            <div class="hero-buttons">
+                <a href="#" class="cta-button">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                    Install Extension
+                </a>
+                <a href="#demo" class="cta-button secondary">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    Watch Demo
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">3+</span>
+                    <span class="stat-label">AI Platforms</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">BASIC</span>
+                    <span class="stat-label">Free Forever</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">$3/m</span>
+                    <span class="stat-label">Pro (Cloud Sync)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <!-- Video Demo Section -->
+        <section id="demo" class="video-section">
+            <div class="section-header">
+                <span class="section-tag">Demo</span>
+                <h2>See MemSync in Action</h2>
+                <p class="video-description">Watch how easy it is to save, organize, and collaborate on your AI conversations</p>
+            </div>
+            <div class="video-container">
+                <!-- Replace the src URL below with your actual video link -->
+                <!-- For YouTube: https://www.youtube.com/embed/VIDEO_ID -->
+                <!-- For Vimeo: https://player.vimeo.com/video/VIDEO_ID -->
+                <!-- <iframe src="YOUR_VIDEO_URL" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                
+                <!-- Placeholder - Remove when adding video -->
+                <div class="video-placeholder">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p>Add your demo video link here</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <div class="section-header">
+                <span class="section-tag">Features</span>
+                <h2>Everything You Need</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">💾</span>
+                    <h3>Smart Memory Saving</h3>
+                    <p>Automatically save important conversations from ChatGPT, Claude, and Gemini with one click.</p>
+                    <span class="feature-badge free">FREE</span>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🤖</span>
+                    <h3>AI-Powered Suggestions</h3>
+                    <p>Get intelligent recommendations for organizing chats into projects and teams.</p>
+                    <span class="feature-badge free">FREE</span>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🔄</span>
+                    <h3>Auto-Save Mode</h3>
+                    <p>Enable automatic saving to capture every important chat without manual intervention.</p>
+                    <span class="feature-badge free">FREE</span>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📁</span>
+                    <h3>Project Organization</h3>
+                    <p>Group related chats into projects for better organization and easy retrieval.</p>
+                    <span class="feature-badge free">FREE</span>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">☁️</span>
+                    <h3>Cloud Sync</h3>
+                    <p>Sync your conversations across all devices and never lose your important chats.</p>
+                    <span class="feature-badge free">FREE BETA</span>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">�</span>
+                    <h3>Team Collaboration</h3>
+                    <p>Create teams and share memories with team members for seamless collaboration.</p>
+                    <span class="feature-badge free">FREE BETA</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Supported Platforms -->
+        <section class="platforms">
+            <div class="section-header">
+                <span class="section-tag">Platforms</span>
+                <h2>Works Everywhere You Do</h2>
+                <p class="platforms-description">Seamlessly integrates with your favorite AI chat platforms</p>
+            </div>
+            <div class="platform-badges">
+                <div class="platform-badge">
+                    <img src="assets/openai.svg" alt="ChatGPT">
+                    <span>ChatGPT</span>
+                </div>
+                <div class="platform-badge">
+                    <img src="assets/claude.svg" alt="Claude">
+                    <span>Claude</span>
+                </div>
+                <div class="platform-badge">
+                    <img src="assets/gemini.svg" alt="Gemini">
+                    <span>Gemini</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="how-it-works">
+            <div class="section-header">
+                <span class="section-tag">Getting Started</span>
+                <h2>Start Saving in Minutes</h2>
+                <p class="how-it-works-description">Get up and running with MemSync in four simple steps</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Install Extension</h3>
+                    <p>Add MemSync to your browser with a single click.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Sign Up</h3>
+                    <p>Create your account to sync across devices.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Start Saving</h3>
+                    <p>Click save on any chat to store it in your organized library.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Organize & Access</h3>
+                    <p>Use projects, teams, and AI suggestions to keep everything organized.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="pricing-section">
+            <div class="section-header">
+                <span class="section-tag">Pricing</span>
+                <h2>Simple, Transparent Pricing</h2>
+                <p class="pricing-description">All features are FREE during beta. After beta, basic features remain free with Pro plan at $3/month for cloud features.</p>
+            </div>
+            <div class="pricing-cards">
+                <!-- Free Plan -->
+                <div class="pricing-card featured">
+                    <span class="pricing-badge">Beta - Free Now</span>
+                    <h3>Free</h3>
+                    <div class="price">$0</div>
+                    <div class="price-period">During Beta</div>
+                    <div class="price-note">✨ All features unlocked during beta</div>
+                    <ul class="pricing-features">
+                        <li>Save unlimited conversations</li>
+                        <li>ChatGPT, Claude & Gemini support</li>
+                        <li>AI-powered suggestions</li>
+                        <li>Auto-save mode</li>
+                        <li>Project organization</li>
+                        <li>Advanced filtering</li>
+                        <li>Cloud sync (Beta access)</li>
+                        <li>Team collaboration (Beta access)</li>
+                    </ul>
+                    <a href="#" class="cta-button">
+                        Get Started Free
+                    </a>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="pricing-card">
+                    <h3>Pro</h3>
+                    <div class="price">$3</div>
+                    <div class="price-period">per month</div>
+                    <div class="price-note">🚀 After beta ends:</div>
+                    <ul class="pricing-features">
+                        <li>Save unlimited conversations</li>
+                        <li>ChatGPT, Claude & Gemini support</li>
+                        <li>AI-powered suggestions</li>
+                        <li>Auto-save mode</li>
+                        <li>Project organization</li>
+                        <li>Advanced filtering</li>
+                        <li class="pro-feature">Cloud sync across devices</li>
+                        <li class="pro-feature">Team collaboration</li>
+                        <li class="pro-feature">Share memories with team</li>
+                        <li class="pro-feature">Priority support</li>
+                        <li class="pro-feature">Unlimited team members</li>
+                    </ul>
+                    <a href="#" class="cta-button">
+                        Get Started Free
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <h2>Ready to Get Started?</h2>
+            <p>Join the beta and get all features FREE while we build the future of AI conversation management</p>
+            <a href="#" class="cta-button">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+                Install Free Extension
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="assets/logo-white.png" alt="MemSync Logo">
+                <span>MemSync</span>
+            </div>
+            <div class="footer-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#demo">Demo</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="mailto:ahmedfaroq.dev@gmail.com">Support</a>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p>Built with ❤️ for Everyone, By <a href="https://devahmedfarooq.github.io" target="_blank" rel="noopener noreferrer">Ahmed Faroq</a></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
